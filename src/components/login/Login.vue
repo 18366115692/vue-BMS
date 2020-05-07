@@ -3,7 +3,7 @@
     <div class="login-box">
       <!-- 头像盒子 -->
       <div class="login-logo">
-        <img alt src="http://img5.imgtn.bdimg.com/it/u=2634527366,147296187&fm=26&gp=0.jpg" />
+        <img alt src="../../assets/loginLogo.jpg" />
       </div>
       <!-- 表单盒子 -->
       <el-form

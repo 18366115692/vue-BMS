@@ -4,6 +4,15 @@ import VueRouter from 'vue-router'
 import Home from '../views/home/Home.vue'
 // 导入组件中文件
 import Login from '../components/login/Login.vue'
+import Welcome from '../components/Welcome.vue'
+import Users from '../components/home/Users.vue'
+import Rights from '../components/home/Rights.vue'
+import Goods from '../components/home/Goods.vue'
+import Orders from '../components/home/Orders.vue'
+import Reports from '../components/home/Reports.vue'
+import Categories from '../components/home/Categories.vue'
+import Params from '../components/home/Params.vue'
+import Roles from '../components/home/Roles.vue'
 
 Vue.use(VueRouter)
 
@@ -19,7 +28,20 @@ const routes = [
   },
   {
     path: '/home',
-    component: Home
+    component: Home,
+    // 重定向路由显示，目的是为了刚进入页面时，展示一下欢迎界面，所以通过主页的子路由显示
+    redirect: '/welcome',
+    children: [
+      { path: '/welcome', component: Welcome },
+      { path: '/users', component: Users },
+      { path: '/rights', component: Rights },
+      { path: '/goods', component: Goods },
+      { path: '/orders', component: Orders },
+      { path: '/reports', component: Reports },
+      { path: '/categories', component: Categories },
+      { path: '/params', component: Params },
+      { path: '/roles', component: Roles }
+    ]
   }
 ]
 
