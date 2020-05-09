@@ -67,6 +67,7 @@
                 type="warning"
                 icon="el-icon-setting"
                 :enterable="false"
+                @click="showAssignRoles(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -149,6 +150,34 @@
         >
       </span>
     </el-dialog>
+    <!-- 分配角色区域 -->
+    <el-dialog
+      title="分配角色"
+      :visible.sync="isShowAssignRoles"
+      width="50%"
+      @close="clearRolesData"
+    >
+      <div>
+        <p>角色名称：{{ userinfo.username }}</p>
+        <p>角色描述：{{ userinfo.role_name }}</p>
+        <p>
+          分配新角色：
+          <el-select v-model="selectId" placeholder="请选择">
+            <el-option
+              v-for="item in roleslist"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="isShowAssignRoles = false">取 消</el-button>
+        <el-button type="primary" @click="saveChangeRoles">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -211,7 +240,15 @@ export default {
           { validator: checkMobile, trigger: 'blur' },
           { required: true, message: '请输入手机号', trigger: 'blur' }
         ]
-      }
+      },
+      // 分配角色弹框开关
+      isShowAssignRoles: false,
+      // 需要分配权限的用户信息
+      userinfo: {},
+      // 绑定下拉框同步数据
+      selectId: '',
+      // 请求的下拉框数组
+      roleslist: []
     }
   },
   created() {
@@ -272,7 +309,6 @@ export default {
     },
     // 监听修改用户信息事件
     async showEditForm(id) {
-      console.log(id)
       const { data: res } = await this.$http.get('users/' + id)
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.editUserInfo = res.data
@@ -315,6 +351,34 @@ export default {
             message: '已取消删除'
           })
         })
+    },
+    // 监听分配角色事件
+    async showAssignRoles(userinfo) {
+      // 通过传递将需要分配权限的用户信息保存下来
+      this.userinfo = userinfo
+      // 在展开对话框之前，获取下拉列表的数据信息
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.roleslist = res.data
+      this.isShowAssignRoles = true
+    },
+    // 监听分配角色弹框关闭事件
+    clearRolesData() {
+      this.selectId = ''
+      this.userinfo = {}
+    },
+    // 监听分配角色弹框中的确认事件
+    async saveChangeRoles() {
+      // 首先判断用户是否选择了角色，没有选定角色需要弹框提示
+      if (!this.selectId) return this.$message.error('请选择需要修改的角色权限！')
+      const { data: res } = await this.$http.put(
+        `users/${this.userinfo.id}/role`,
+        { rid: this.selectId }
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success(res.meta.msg)
+      this.getUserList()
+      this.isShowAssignRoles = false
     }
   }
 }

@@ -5,14 +5,14 @@ import Home from '../views/home/Home.vue'
 // 导入组件中文件
 import Login from '../components/login/Login.vue'
 import Welcome from '../components/Welcome.vue'
-import Users from '../components/home/Users.vue'
-import Rights from '../components/home/Rights.vue'
+import Users from '../components/user/Users.vue'
+import Rights from '../components/power/Rights.vue'
 import Goods from '../components/home/Goods.vue'
 import Orders from '../components/home/Orders.vue'
 import Reports from '../components/home/Reports.vue'
 import Categories from '../components/home/Categories.vue'
 import Params from '../components/home/Params.vue'
-import Roles from '../components/home/Roles.vue'
+import Roles from '../components/power/Roles.vue'
 
 Vue.use(VueRouter)
 
