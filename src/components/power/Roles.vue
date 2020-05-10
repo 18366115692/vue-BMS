@@ -1,5 +1,6 @@
 <template>
   <div class="roles-wrapper">
+    <!-- 头部面包屑部分 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>权限管理</el-breadcrumb-item>
@@ -8,11 +9,9 @@
     <!-- 卡片部分 -->
     <el-card class="box-card">
       <!-- 搜索框区域 -->
-      <el-row :gutter="20">
+      <el-row>
         <el-col :span="2">
-          <el-button type="primary" @click="isUserInfo = true"
-            >添加用户</el-button
-          >
+          <el-button type="primary" @click="addUserInfo">添加用户</el-button>
         </el-col>
       </el-row>
       <!-- 数据展示区域 -->
@@ -101,6 +100,56 @@
       </el-table>
     </el-card>
 
+    <!-- 添加角色隐藏部分 -->
+    <el-dialog
+      title="添加角色"
+      :visible.sync="isAddUserInfo"
+      width="50%"
+      @close="clearEditForm"
+    >
+      <el-form
+        :model="addRolesList"
+        ref="addRolesRef"
+        label-width="100px"
+        :rules="addRolesRules"
+      >
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="addRolesList.roleName"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" prop="roleDesc">
+          <el-input v-model="addRolesList.roleDesc"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button @click="isAddUserInfo = false">取 消</el-button>
+        <el-button type="primary" @click="addCreateRules()">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 编辑角色隐藏部分 -->
+    <el-dialog
+      title="编辑角色"
+      :visible.sync="isEditRoles"
+      width="50%"
+      @close="clearEditForm"
+    >
+      <el-form
+        :model="editRolesList"
+        ref="editRolesRef"
+        label-width="100px"
+        :rules="editRolesRules"
+      >
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="editRolesList.roleName"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" prop="roleDesc">
+          <el-input v-model="editRolesList.roleDesc"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button @click="isEditRoles = false">取 消</el-button>
+        <el-button type="primary" @click="addEditRoles()">确 定</el-button>
+      </span>
+    </el-dialog>
     <!-- 分配权限隐藏部分 -->
     <el-dialog
       title="分配权限"
@@ -145,7 +194,36 @@ export default {
       // 接收分配权限界面默认勾选数据的数组
       defPowerArr: [],
       // 获取打开分配角色弹框给的id
-      roleId: ''
+      roleId: '',
+      // 获取编辑角色弹框信息
+      editRolesList: {},
+      // 编辑角色开关
+      isEditRoles: false,
+      // 编辑角色验证信息
+      editRolesRules: {
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { required: true, message: '请输入角色描述', trigger: 'blur' }
+        ]
+      },
+      // 添加用户显示开关
+      isAddUserInfo: false,
+      // 添加角色验证信息
+      addRolesRules: {
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { required: true, message: '请输入角色描述', trigger: 'blur' }
+        ]
+      },
+      // 存放添加角色的录入信息
+      addRolesList: {
+        roleName: '',
+        roleDesc: ''
+      }
     }
   },
   created() {
@@ -181,12 +259,34 @@ export default {
         })
     },
     // 监听编辑用户信息事件
-    showEditForm(id) {
-      this.$message({ message: '编辑功能后续更新', center: true })
+    async showEditForm(id) {
+      const { data: res } = await this.$http.get('roles/' + id)
+      if (res.meta.status !== 200) return this.$message.error('获取编辑角色信息失败！')
+      this.editRolesList = res.data
+      this.isEditRoles = true
     },
     // 监听删除用户信息事件
     deleteForm(id) {
-      this.$message({ message: '删除功能后续更新', center: true })
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          const { data: res } = await this.$http.delete('roles/' + id)
+          if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+          this.getRoleList()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     // 监听分配权限事件
     async showAssignedPermissions(node) {
@@ -230,6 +330,42 @@ export default {
       this.getRoleList()
       // 关闭权限分配弹框
       this.isShowAssignedPermissions = false
+    },
+    // 监听确认修改角色信息事件
+    addEditRoles() {
+      this.$refs.editRolesRef.validate(async v => {
+        if (!v) return
+        const { data: res } = await this.$http.put(
+          'roles/' + this.editRolesList.roleId,
+          {
+            roleName: this.editRolesList.roleName,
+            roleDesc: this.editRolesList.roleDesc
+          }
+        )
+        if (res.meta.status !== 200) return this.$message.error('修改信息失败！')
+        this.getRoleList()
+        this.isEditRoles = false
+      })
+    },
+    // 监听编辑角色弹框事件
+    clearEditForm() {
+      this.$refs.editRolesRef.resetFields()
+      this.addRolesList = {}
+    },
+    // 监听添加用户弹框显示事件
+    addUserInfo() {
+      this.isAddUserInfo = true
+    },
+    // 监听添加用户确认事件
+    addCreateRules() {
+      this.$refs.addRolesRef.validate(async v => {
+        if (!v) return
+        const { data: res } = await this.$http.post('roles', this.addRolesList)
+        if (res.meta.status !== 201) return this.$message.error('添加角色失败！')
+        this.$message.success('添加角色成功！')
+        this.getRoleList()
+        this.isAddUserInfo = false
+      })
     }
   }
 }

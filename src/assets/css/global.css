@@ -30,3 +30,15 @@ body,
 .el-table-column {
   text-align: center;
 }
+
+.tree-table {
+  margin-top: 15px;
+}
+
+.el-cascader {
+  width: 100%;
+}
+
+.el-cascader-menu {
+  height: 300px;
+}
