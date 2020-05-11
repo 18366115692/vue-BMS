@@ -114,15 +114,15 @@
         :rules="addRolesRules"
       >
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="addRolesList.roleName"></el-input>
+          <el-input v-model="addRolesList.roleName" @keyup.enter.native="addCreateRules"></el-input>
         </el-form-item>
         <el-form-item label="角色描述" prop="roleDesc">
-          <el-input v-model="addRolesList.roleDesc"></el-input>
+          <el-input v-model="addRolesList.roleDesc" @keyup.enter.native="addCreateRules"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button @click="isAddUserInfo = false">取 消</el-button>
-        <el-button type="primary" @click="addCreateRules()">确 定</el-button>
+        <el-button type="primary" @click="addCreateRules">确 定</el-button>
       </span>
     </el-dialog>
     <!-- 编辑角色隐藏部分 -->
@@ -139,15 +139,15 @@
         :rules="editRolesRules"
       >
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="editRolesList.roleName"></el-input>
+          <el-input v-model="editRolesList.roleName" @keyup.enter.native="addEditRoles"></el-input>
         </el-form-item>
         <el-form-item label="角色描述" prop="roleDesc">
-          <el-input v-model="editRolesList.roleDesc"></el-input>
+          <el-input v-model="editRolesList.roleDesc" @keyup.enter.native="addEditRoles"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button @click="isEditRoles = false">取 消</el-button>
-        <el-button type="primary" @click="addEditRoles()">确 定</el-button>
+        <el-button type="primary" @click="addEditRoles">确 定</el-button>
       </span>
     </el-dialog>
     <!-- 分配权限隐藏部分 -->

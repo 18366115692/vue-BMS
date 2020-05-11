@@ -8,7 +8,7 @@
     </el-breadcrumb>
     <!-- 卡片部分 -->
     <el-card class="box-card">
-      <!-- 搜索框区域 -->
+      <!-- 添加分类区域 -->
       <el-row>
         <el-col :span="2">
           <el-button type="primary" @click="addCateItem">添加分类</el-button>
@@ -87,7 +87,7 @@
         :rules="editCateInfoRules"
       >
         <el-form-item label="分类名称" prop="cat_name">
-          <el-input v-model="editCateInfo.cat_name"></el-input>
+          <el-input v-model="editCateInfo.cat_name" @keyup.enter.native="saveEditCateInfo"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -110,7 +110,7 @@
         :rules="addCateInfoRules"
       >
         <el-form-item label="分类名称:" prop="cat_name">
-          <el-input v-model="addCateInfo.cat_name"></el-input>
+          <el-input v-model="addCateInfo.cat_name" @keyup.enter.native="saveCateList"></el-input>
         </el-form-item>
         <el-form-item label="父级分类:">
           <el-cascader
@@ -343,3 +343,9 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.el-cascader {
+  width: 100%;
+}
+</style>

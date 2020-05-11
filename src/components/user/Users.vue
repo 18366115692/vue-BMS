@@ -16,6 +16,7 @@
             clearable
             v-model="paramsInfo.query"
             @clear="getUserList"
+            @keyup.enter.native="getUserList"
           >
             <el-button
               slot="append"
@@ -100,16 +101,16 @@
         label-width="80px"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="addUserInfo.username"></el-input>
+          <el-input v-model="addUserInfo.username" @keyup.enter.native="addUser"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="addUserInfo.password" type="password"></el-input>
+          <el-input v-model="addUserInfo.password" type="password" @keyup.enter.native="addUser"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="addUserInfo.email"></el-input>
+          <el-input v-model="addUserInfo.email" @keyup.enter.native="addUser"></el-input>
         </el-form-item>
         <el-form-item label="手机" prop="mobile">
-          <el-input v-model="addUserInfo.mobile"></el-input>
+          <el-input v-model="addUserInfo.mobile" @keyup.enter.native="addUser"></el-input>
         </el-form-item>
       </el-form>
       <!-- 添加用户底部区域 -->
@@ -133,13 +134,13 @@
         label-width="80px"
       >
         <el-form-item label="用户名">
-          <el-input disabled v-model="editUserInfo.username"></el-input>
+          <el-input disabled v-model="editUserInfo.username" @keyup.enter.native="editUser(editUserInfo.id)"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="editUserInfo.email"></el-input>
+          <el-input v-model="editUserInfo.email" @keyup.enter.native="editUser(editUserInfo.id)"></el-input>
         </el-form-item>
         <el-form-item label="手机" prop="mobile">
-          <el-input v-model="editUserInfo.mobile"></el-input>
+          <el-input v-model="editUserInfo.mobile" @keyup.enter.native="editUser(editUserInfo.id)"></el-input>
         </el-form-item>
       </el-form>
       <!-- 修改用户底部区域 -->
