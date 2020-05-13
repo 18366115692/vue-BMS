@@ -11,6 +11,7 @@
     <el-container>
       <!-- 内容左侧导航条 -->
       <el-aside :width="isCollapse ? '64px' : '200px'">
+        <div class="toggle-button" @click="changeWidth">|||</div>
         <el-menu
           background-color="#333744"
           text-color="#fff"
@@ -21,7 +22,6 @@
           router
           :default-active="activePath"
         >
-          <div class="toggle-button" @click="changeWidth">|||</div>
           <!-- 一级导航栏 -->
           <el-submenu
             :index="group.id + ''"
@@ -47,9 +47,11 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main>
-        <router-view></router-view>
-      </el-main>
+      <!-- <el-scrollbar style="height:100%"> -->
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      <!-- <el-scrollbar> -->
     </el-container>
   </el-container>
 </template>
@@ -125,6 +127,7 @@ export default {
 }
 .el-main {
   background-color: #eaedf1;
+  height: 100vh;
 }
 .header-left {
   display: flex;
@@ -149,7 +152,7 @@ export default {
   font-size: 12px;
   text-align: center;
   line-height: 24px;
-  letter-spacing: 0.2em;  // 设置字体之间的间距
+  letter-spacing: 0.2em; // 设置字体之间的间距
   cursor: pointer;
   font-weight: 600;
 }

@@ -38,3 +38,14 @@ body,
 .el-cascader-menu {
   height: 300px;
 }
+
+.el-steps {
+  margin: 15px 0px;
+}
+.el-step__title {
+  font-size: 13px;
+}
+
+.ql-editor {
+  height: 260px !important;
+}

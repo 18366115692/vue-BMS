@@ -8,6 +8,7 @@ import Welcome from '../components/Welcome.vue'
 import Users from '../components/user/Users.vue'
 import Rights from '../components/power/Rights.vue'
 import Goods from '../components/goods/Goods.vue'
+import Add from '../components/goods/Add.vue'
 import Orders from '../components/home/Orders.vue'
 import Reports from '../components/home/Reports.vue'
 import Categories from '../components/goods/Categories.vue'
@@ -40,7 +41,8 @@ const routes = [
       { path: '/reports', component: Reports },
       { path: '/categories', component: Categories },
       { path: '/params', component: Params },
-      { path: '/roles', component: Roles }
+      { path: '/roles', component: Roles },
+      { path: '/goods/add', component: Add }
     ]
   }
 ]

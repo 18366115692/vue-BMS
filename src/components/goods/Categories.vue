@@ -239,7 +239,6 @@ export default {
     },
     // 监听编辑名称提交事件
     saveEditCateInfo() {
-      console.log(this.editCateInfo)
       this.$refs.editCateRef.validate(async val => {
         if (!val) return
         const { data: res } = await this.$http.put(
