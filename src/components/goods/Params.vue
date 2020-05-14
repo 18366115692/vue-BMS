@@ -9,10 +9,7 @@
     <!-- 卡片部分 -->
     <el-card class="box-card">
       <!-- 头部提示部分 -->
-      <el-tag
-        style="width: 100%; font-size: 16px; font-weight: 400"
-        type="warning"
-      >
+      <el-tag style="width: 100%; font-size: 16px; font-weight: 400" type="warning">
         <i class="el-icon-warning"></i>
         注意：只允许为第三级分类设置相关参数
       </el-tag>
@@ -32,10 +29,7 @@
       <el-tabs v-model="menuActiveName" @tab-click="handleClick">
         <el-tab-pane label="动态参数" name="many">
           <!-- 添加按钮 -->
-          <el-button
-            :disabled="isBtnDisable"
-            type="primary"
-            @click="isActive = true"
+          <el-button :disabled="isBtnDisable" type="primary" @click="isActive = true"
             >添加参数</el-button
           >
           <!-- 中部列表区域 -->
@@ -61,20 +55,13 @@
                   @blur="handleInputConfirm(scope.row)"
                   label=""
                 ></el-input>
-                <el-button
-                  v-else
-                  class="button-new-tag"
-                  size="small"
-                  @click="showInput(scope.row)"
+                <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)"
                   >+ New Tag</el-button
                 >
               </template>
             </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
-            <el-table-column
-              label="参数名称"
-              prop="attr_name"
-            ></el-table-column>
+            <el-table-column label="参数名称" prop="attr_name"></el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button
@@ -97,10 +84,7 @@
         </el-tab-pane>
         <el-tab-pane label="静态属性" name="only">
           <!-- 添加按钮 -->
-          <el-button
-            :disabled="isBtnDisable"
-            type="primary"
-            @click="isActive = true"
+          <el-button :disabled="isBtnDisable" type="primary" @click="isActive = true"
             >添加属性</el-button
           >
           <!-- 中部列表区域 -->
@@ -126,20 +110,13 @@
                   @blur="handleInputConfirm"
                   label=""
                 ></el-input>
-                <el-button
-                  v-else
-                  class="button-new-tag"
-                  size="small"
-                  @click="showInput(scope.row)"
+                <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)"
                   >+ New Tag</el-button
                 >
               </template>
             </el-table-column>
             <el-table-column label="#" type="index"></el-table-column>
-            <el-table-column
-              label="参数名称"
-              prop="attr_name"
-            ></el-table-column>
+            <el-table-column label="参数名称" prop="attr_name"></el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button
@@ -181,11 +158,7 @@
       </span>
     </el-dialog>
     <!-- 编辑弹框 -->
-    <el-dialog
-      :title="'修改' + tableText"
-      :visible.sync="showEditDialog"
-      width="50%"
-    >
+    <el-dialog :title="'修改' + tableText" :visible.sync="showEditDialog" width="50%">
       <el-form
         :model="editDialogForm"
         ref="editDialogFormRef"
@@ -199,11 +172,7 @@
       </el-form>
       <span slot="footer">
         <el-button @click="showEditDialog = false">取 消</el-button>
-        <el-button
-          type="primary"
-          @click="editParamsData(editDialogForm.attr_id)"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="editParamsData(editDialogForm.attr_id)">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -279,12 +248,9 @@ export default {
     // 抽离的公用获取数据事件
     async getCateAttrData() {
       this.tableData = []
-      const { data: res } = await this.$http.get(
-        `categories/${this.cateId}/attributes`,
-        {
-          params: { sel: this.menuActiveName }
-        }
-      )
+      const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
+        params: { sel: this.menuActiveName }
+      })
       if (res.meta.status !== 200) {
         return this.$message.error('获取商品分类信息失败！')
       }
@@ -301,13 +267,10 @@ export default {
     addNewParams() {
       this.$refs.addDialogFormRef.validate(async v => {
         if (!v) return
-        const { data: res } = await this.$http.post(
-          `categories/${this.cateId}/attributes`,
-          {
-            attr_name: this.addDialogForm.attr_name,
-            attr_sel: this.menuActiveName
-          }
-        )
+        const { data: res } = await this.$http.post(`categories/${this.cateId}/attributes`, {
+          attr_name: this.addDialogForm.attr_name,
+          attr_sel: this.menuActiveName
+        })
         if (res.meta.status !== 201) {
           return this.$message.error('添加参数失败！')
         }
@@ -353,13 +316,10 @@ export default {
     editParamsData(id) {
       this.$refs.editDialogFormRef.validate(async v => {
         if (!v) return
-        const { data: res } = await this.$http.put(
-          `categories/${this.cateId}/attributes/${id}`,
-          {
-            attr_name: this.editDialogForm.attr_name,
-            attr_sel: this.menuActiveName
-          }
-        )
+        const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${id}`, {
+          attr_name: this.editDialogForm.attr_name,
+          attr_sel: this.menuActiveName
+        })
         if (res.meta.status !== 200) {
           return this.$message.error('修改信息失败！')
         }

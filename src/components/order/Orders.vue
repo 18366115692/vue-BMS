@@ -17,30 +17,21 @@
             clearable
             @close="clearInpVal"
           >
-            <el-button
-              @click="searchList"
-              slot="append"
-              icon="el-icon-search"
-            ></el-button>
+            <el-button @click="searchList" slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </el-col>
       </el-row>
       <el-table :data="orderslist" border stripe>
         <el-table-column label="#" type="index"> </el-table-column>
-        <el-table-column prop="order_number" label="订单编号">
-        </el-table-column>
-        <el-table-column prop="order_price" label="订单价格" width="80px">
-        </el-table-column>
+        <el-table-column prop="order_number" label="订单编号"> </el-table-column>
+        <el-table-column prop="order_price" label="订单价格" width="80px"> </el-table-column>
         <el-table-column prop="order_pay" label="是否付款" width="92px">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.pay_status === '0'" type="danger"
-              >未付款</el-tag
-            >
+            <el-tag v-if="scope.row.pay_status === '0'" type="danger">未付款</el-tag>
             <el-tag v-else type="success">已付款</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="is_send" label="是否发货" width="80px">
-        </el-table-column>
+        <el-table-column prop="is_send" label="是否发货" width="80px"> </el-table-column>
         <el-table-column label="下单时间" width="200px">
           <template slot-scope="scope">
             {{ (scope.row.create_time * 1000) | dateFormat }}
@@ -98,25 +89,16 @@
           </el-cascader>
         </el-form-item>
         <el-form-item label="详细地址" prop="address2">
-          <el-input
-            v-model="addressForm.address2"
-            placeholder="请输入详细地址"
-          ></el-input>
+          <el-input v-model="addressForm.address2" placeholder="请输入详细地址"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button @click="showAddressDialog = false">取 消</el-button>
-        <el-button type="primary" @click="showAddressDialog = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="showAddressDialog = false">确 定</el-button>
       </span>
     </el-dialog>
     <!-- 获取物流信息弹框 -->
-    <el-dialog
-      title="物流信息"
-      :visible.sync="showLogisticsProgress"
-      width="50%"
-    >
+    <el-dialog title="物流信息" :visible.sync="showLogisticsProgress" width="50%">
       <el-timeline :reverse="false">
         <el-timeline-item
           v-for="(activity, index) in activities"

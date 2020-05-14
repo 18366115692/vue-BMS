@@ -26,11 +26,9 @@
             >
               <!-- 存放一级角色列表信息 -->
               <el-col :span="5">
-                <el-tag
-                  @close="removeTagById(scope.row, onelevel.id)"
-                  closable
-                  >{{ onelevel.authName }}</el-tag
-                >
+                <el-tag @close="removeTagById(scope.row, onelevel.id)" closable>{{
+                  onelevel.authName
+                }}</el-tag>
                 <i class="el-icon-caret-right"></i>
               </el-col>
               <!-- 存放二级和三级角色列表信息 -->
@@ -101,18 +99,8 @@
     </el-card>
 
     <!-- 添加角色隐藏部分 -->
-    <el-dialog
-      title="添加角色"
-      :visible.sync="isAddUserInfo"
-      width="50%"
-      @close="clearEditForm"
-    >
-      <el-form
-        :model="addRolesList"
-        ref="addRolesRef"
-        label-width="100px"
-        :rules="addRolesRules"
-      >
+    <el-dialog title="添加角色" :visible.sync="isAddUserInfo" width="50%" @close="clearEditForm">
+      <el-form :model="addRolesList" ref="addRolesRef" label-width="100px" :rules="addRolesRules">
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="addRolesList.roleName" @keyup.enter.native="addCreateRules"></el-input>
         </el-form-item>
@@ -126,12 +114,7 @@
       </span>
     </el-dialog>
     <!-- 编辑角色隐藏部分 -->
-    <el-dialog
-      title="编辑角色"
-      :visible.sync="isEditRoles"
-      width="50%"
-      @close="clearEditForm"
-    >
+    <el-dialog title="编辑角色" :visible.sync="isEditRoles" width="50%" @close="clearEditForm">
       <el-form
         :model="editRolesList"
         ref="editRolesRef"
@@ -201,23 +184,15 @@ export default {
       isEditRoles: false,
       // 编辑角色验证信息
       editRolesRules: {
-        roleName: [
-          { required: true, message: '请输入角色名称', trigger: 'blur' }
-        ],
-        roleDesc: [
-          { required: true, message: '请输入角色描述', trigger: 'blur' }
-        ]
+        roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+        roleDesc: [{ required: true, message: '请输入角色描述', trigger: 'blur' }]
       },
       // 添加用户显示开关
       isAddUserInfo: false,
       // 添加角色验证信息
       addRolesRules: {
-        roleName: [
-          { required: true, message: '请输入角色名称', trigger: 'blur' }
-        ],
-        roleDesc: [
-          { required: true, message: '请输入角色描述', trigger: 'blur' }
-        ]
+        roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+        roleDesc: [{ required: true, message: '请输入角色描述', trigger: 'blur' }]
       },
       // 存放添加角色的录入信息
       addRolesList: {
@@ -244,9 +219,7 @@ export default {
         type: 'warning'
       })
         .then(async () => {
-          const { data: res } = await this.$http.delete(
-            `roles/${val.id}/rights/${id}`
-          )
+          const { data: res } = await this.$http.delete(`roles/${val.id}/rights/${id}`)
           if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
           this.$message.success('删除成功')
           val.children = res.data
@@ -320,10 +293,9 @@ export default {
       ]
       // 由于发送请求时，需要提供请求体，必须以逗号分隔的字符串，所以需要转化
       const rightsStr = arr.join(',')
-      const { data: res } = await this.$http.post(
-        `roles/${this.roleId}/rights`,
-        { rids: rightsStr }
-      )
+      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, {
+        rids: rightsStr
+      })
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.$message.success(res.meta.msg)
       // 分配权限成功重新刷新列表
@@ -335,13 +307,10 @@ export default {
     addEditRoles() {
       this.$refs.editRolesRef.validate(async v => {
         if (!v) return
-        const { data: res } = await this.$http.put(
-          'roles/' + this.editRolesList.roleId,
-          {
-            roleName: this.editRolesList.roleName,
-            roleDesc: this.editRolesList.roleDesc
-          }
-        )
+        const { data: res } = await this.$http.put('roles/' + this.editRolesList.roleId, {
+          roleName: this.editRolesList.roleName,
+          roleDesc: this.editRolesList.roleDesc
+        })
         if (res.meta.status !== 200) return this.$message.error('修改信息失败！')
         this.getRoleList()
         this.isEditRoles = false

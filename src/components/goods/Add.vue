@@ -19,12 +19,7 @@
         <el-step title="完成"></el-step>
       </el-steps>
       <!-- 纵向数据信息列表 -->
-      <el-form
-        :model="mainInfo"
-        :rules="mainInfoRules"
-        ref="mainInfoRef"
-        label-position="top"
-      >
+      <el-form :model="mainInfo" :rules="mainInfoRules" ref="mainInfoRef" label-position="top">
         <el-tabs
           tab-position="left"
           v-model="stepsActive"
@@ -39,16 +34,10 @@
               <el-input type="number" v-model="mainInfo.goods_price"></el-input>
             </el-form-item>
             <el-form-item label="商品重量" prop="goods_weight">
-              <el-input
-                type="number"
-                v-model="mainInfo.goods_weight"
-              ></el-input>
+              <el-input type="number" v-model="mainInfo.goods_weight"></el-input>
             </el-form-item>
             <el-form-item label="商品数量" prop="goods_number">
-              <el-input
-                type="number"
-                v-model="mainInfo.goods_number"
-              ></el-input>
+              <el-input type="number" v-model="mainInfo.goods_number"></el-input>
             </el-form-item>
             <el-form-item label="商品分类" prop="goods_cat">
               <el-cascader
@@ -103,9 +92,7 @@
           </el-tab-pane>
           <el-tab-pane label="商品内容" name="4">
             <quill-editor v-model="mainInfo.goods_introduce"></quill-editor>
-            <el-button class="add_btn" type="primary" @click="addNewForm"
-              >确认添加</el-button
-            >
+            <el-button class="add_btn" type="primary" @click="addNewForm">确认添加</el-button>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -146,21 +133,11 @@ export default {
       },
       // 基本信息验证
       mainInfoRules: {
-        goods_name: [
-          { required: true, message: '请输入商品名称', trigger: 'blur' }
-        ],
-        goods_price: [
-          { required: true, message: '价格不能为空', trigger: 'blur' }
-        ],
-        goods_weight: [
-          { required: true, message: '重量不能为空', trigger: 'blur' }
-        ],
-        goods_number: [
-          { required: true, message: '数量不能为空', trigger: 'blur' }
-        ],
-        goods_cat: [
-          { required: true, message: '请选择商品分类', trigger: 'blur' }
-        ]
+        goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
+        goods_price: [{ required: true, message: '价格不能为空', trigger: 'blur' }],
+        goods_weight: [{ required: true, message: '重量不能为空', trigger: 'blur' }],
+        goods_number: [{ required: true, message: '数量不能为空', trigger: 'blur' }],
+        goods_cat: [{ required: true, message: '请选择商品分类', trigger: 'blur' }]
       },
       // 获取到的商品分类数据
       catelist: [],
@@ -241,10 +218,9 @@ export default {
     async getGoodsParams() {
       const {
         data: res
-      } = await this.$http.get(
-        `categories/${this.mainInfo.goods_cat[2]}/attributes`,
-        { params: { sel: 'many' } }
-      )
+      } = await this.$http.get(`categories/${this.mainInfo.goods_cat[2]}/attributes`, {
+        params: { sel: 'many' }
+      })
       res.data.forEach(v => {
         v.attr_vals = v.attr_vals.length === 0 ? [] : v.attr_vals.split(' ')
       })
@@ -257,10 +233,9 @@ export default {
     async getGoodsAttrs() {
       const {
         data: res
-      } = await this.$http.get(
-        `categories/${this.mainInfo.goods_cat[2]}/attributes`,
-        { params: { sel: 'only' } }
-      )
+      } = await this.$http.get(`categories/${this.mainInfo.goods_cat[2]}/attributes`, {
+        params: { sel: 'only' }
+      })
       if (res.meta.status !== 200) {
         return this.$message.error('获取商品参数信息失败！')
       }

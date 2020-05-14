@@ -35,35 +35,26 @@
             type="success"
             class="el-icon-success"
           ></i>
-          <i
-            style="color: #F56C6C"
-            v-else
-            type="danger"
-            class="el-icon-error"
-          ></i>
+          <i style="color: #F56C6C" v-else type="danger" class="el-icon-error"></i>
         </template>
         <!-- 排序的渲染模板 -->
         <template slot="line_up" slot-scope="scope">
           <el-tag v-if="scope.row.cat_level === 0">一级</el-tag>
-          <el-tag v-else-if="scope.row.cat_level === 1" type="success"
-            >二级</el-tag
-          >
+          <el-tag v-else-if="scope.row.cat_level === 1" type="success">二级</el-tag>
           <el-tag v-else type="warning">三级</el-tag>
         </template>
         <!-- 操作的渲染模板 -->
         <template slot="handle" slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            icon="el-icon-edit"
-            @click="editCateItem(scope.row)"
-          >编辑</el-button>
+          <el-button size="mini" type="primary" icon="el-icon-edit" @click="editCateItem(scope.row)"
+            >编辑</el-button
+          >
           <el-button
             size="mini"
             type="danger"
             icon="el-icon-delete"
             @click="deleteCateItem(scope.row.cat_id)"
-          >删除</el-button>
+            >删除</el-button
+          >
         </template>
       </tree-table>
       <!-- 底部分页区域 -->
@@ -87,7 +78,10 @@
         :rules="editCateInfoRules"
       >
         <el-form-item label="分类名称" prop="cat_name">
-          <el-input v-model="editCateInfo.cat_name" @keyup.enter.native="saveEditCateInfo"></el-input>
+          <el-input
+            v-model="editCateInfo.cat_name"
+            @keyup.enter.native="saveEditCateInfo"
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -96,12 +90,7 @@
       </span>
     </el-dialog>
     <!-- 添加分类弹框区域 -->
-    <el-dialog
-      title="添加分类"
-      :visible.sync="idAddCateItem"
-      width="50%"
-      @close="clearCateForm"
-    >
+    <el-dialog title="添加分类" :visible.sync="idAddCateItem" width="50%" @close="clearCateForm">
       <!-- 添加分类的表单 -->
       <el-form
         :model="addCateInfo"
@@ -189,9 +178,7 @@ export default {
       },
       // 添加分类名称规则
       addCateInfoRules: {
-        cat_name: [
-          { required: true, message: '请输入分类名称', trigger: 'blur' }
-        ]
+        cat_name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }]
       },
       // 父级分类列表的数据
       parentCateList: [],
@@ -212,9 +199,7 @@ export default {
       editCateInfo: {},
       // 编辑分类名称规则
       editCateInfoRules: {
-        cat_name: [
-          { required: true, message: '请输入分类名称', trigger: 'blur' }
-        ]
+        cat_name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }]
       }
     }
   },
@@ -241,10 +226,9 @@ export default {
     saveEditCateInfo() {
       this.$refs.editCateRef.validate(async val => {
         if (!val) return
-        const { data: res } = await this.$http.put(
-          'categories/' + this.editCateInfo.cat_id,
-          { cat_name: this.editCateInfo.cat_name }
-        )
+        const { data: res } = await this.$http.put('categories/' + this.editCateInfo.cat_id, {
+          cat_name: this.editCateInfo.cat_name
+        })
         console.log(res)
         if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
         this.$message.success(res.meta.msg)
@@ -303,9 +287,7 @@ export default {
       // 在这里判断 selectCateValue 数组中的长度，如果为0，表示没有选择父级分类，如果大于0，表示选择了父级分类
       if (this.selectCateValue.length > 0) {
         // cat_pid 和 selectCateValue 数组的最后一项相同
-        this.addCateInfo.cat_pid = this.selectCateValue[
-          this.selectCateValue.length - 1
-        ]
+        this.addCateInfo.cat_pid = this.selectCateValue[this.selectCateValue.length - 1]
         // cat_pid 和 selectCateValue 数组的长度相同
         this.addCateInfo.cat_level = this.selectCateValue.length
       } else {
@@ -319,10 +301,7 @@ export default {
       // 预校验填写信息是否正确
       this.$refs.addCateItemRef.validate(async val => {
         if (!val) return
-        const { data: res } = await this.$http.post(
-          'categories',
-          this.addCateInfo
-        )
+        const { data: res } = await this.$http.post('categories', this.addCateInfo)
         if (res.meta.status !== 201) return this.$message.error(res.meta.msg)
         this.$message.success(res.meta.msg)
         this.getCateList()

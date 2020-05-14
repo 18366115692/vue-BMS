@@ -18,11 +18,7 @@
             clearable
             @clear="getGoodsListData"
           >
-            <el-button
-              slot="append"
-              @click="getGoodsListData"
-              icon="el-icon-search"
-            ></el-button>
+            <el-button slot="append" @click="getGoodsListData" icon="el-icon-search"></el-button>
           </el-input>
         </el-col>
         <el-col :span="2">
@@ -32,15 +28,12 @@
       <!-- 列表展示区域 -->
       <el-table :data="goodslist.goods" border stripe>
         <el-table-column label="#" type="index"></el-table-column>
-        <el-table-column prop="goods_name" label="商品名称" min-width="660px">
-        </el-table-column>
-        <el-table-column prop="goods_price" label="商品价格(元)" width="100px">
-        </el-table-column>
-        <el-table-column prop="goods_weight" width="80px" label="商品重量">
-        </el-table-column>
+        <el-table-column prop="goods_name" label="商品名称" min-width="660px"> </el-table-column>
+        <el-table-column prop="goods_price" label="商品价格(元)" width="100px"> </el-table-column>
+        <el-table-column prop="goods_weight" width="80px" label="商品重量"> </el-table-column>
         <el-table-column prop="add_time" width="140px" label="创建时间">
           <template slot-scope="scope">
-            {{ scope.row.add_time * 1000 | dateFormat }}
+            {{ (scope.row.add_time * 1000) | dateFormat }}
           </template>
         </el-table-column>
         <el-table-column width="150px" label="操作">
@@ -92,16 +85,10 @@
           <el-input v-model="editItemForm.goods_price" type="number"></el-input>
         </el-form-item>
         <el-form-item label="商品重量" prop="goods_weight">
-          <el-input
-            v-model="editItemForm.goods_weight"
-            type="number"
-          ></el-input>
+          <el-input v-model="editItemForm.goods_weight" type="number"></el-input>
         </el-form-item>
         <el-form-item label="商品数量" prop="goods_number">
-          <el-input
-            v-model="editItemForm.goods_number"
-            type="number"
-          ></el-input>
+          <el-input v-model="editItemForm.goods_number" type="number"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer">
@@ -138,18 +125,10 @@ export default {
       },
       // 添加验证规则
       editItemFormRules: {
-        goods_name: [
-          { required: true, message: '请输入商品名称', trigger: 'blur' }
-        ],
-        goods_price: [
-          { required: true, message: '价格不能为空', trigger: 'blur' }
-        ],
-        goods_weight: [
-          { required: true, message: '重量不能为空', trigger: 'blur' }
-        ],
-        goods_number: [
-          { required: true, message: '数量不能为空', trigger: 'blur' }
-        ]
+        goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
+        goods_price: [{ required: true, message: '价格不能为空', trigger: 'blur' }],
+        goods_weight: [{ required: true, message: '重量不能为空', trigger: 'blur' }],
+        goods_number: [{ required: true, message: '数量不能为空', trigger: 'blur' }]
       },
       newInfo: {}
     }
@@ -234,7 +213,10 @@ export default {
           return this.$message.error('请完善商品信息！')
         }
         this.$message.success('修改商品信息成功！')
-        const { data: res } = await this.$http.put('goods/' + this.editItemForm.goods_id, this.editItemForm)
+        const { data: res } = await this.$http.put(
+          'goods/' + this.editItemForm.goods_id,
+          this.editItemForm
+        )
         console.log(res)
         // this.showAddGoodsDialog = false
       })
